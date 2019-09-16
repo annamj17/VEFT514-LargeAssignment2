@@ -1,0 +1,25 @@
+{
+  "name": "veft-assignment2",
+  "version": "1.0.0",
+  "description": "You have been hired as a lead developer for an art-selling company called Mansion de Subastas. They are obsessed with NodeJS and will not accept anything else as their tech stack. Along with NodeJS they want ExpressJS, MongoDB (with Mongoose). As always failure is not an option, these artist sellers demand perfection!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/annamj17/VEFT514-LargeAssignment2.git"
+  },
+  "author": "Anna Margret",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/annamj17/VEFT514-LargeAssignment2/issues"
+  },
+  "homepage": "https://github.com/annamj17/VEFT514-LargeAssignment2#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mongodb": "^3.3.2",
+    "mongoose": "^5.7.1"
+  }
+}

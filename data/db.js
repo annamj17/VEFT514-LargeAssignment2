@@ -5,7 +5,11 @@ const auctionSchema = require('../schemas/auction');
 const auctionBidSchema = require('../schemas/auctionBid');
 const customerSchema = require('../schemas/customer');
 
-const connection = mongoose.createConnection('mongodb+srv://anna:Abc1234@cluster0-hkoga.mongodb.net/test?retryWrites=true&w=majority', { useNewUrlParser: true });
+const connection = mongoose.createConnection('mongodb+srv://anna:Abc1234@cluster0-hkoga.mongodb.net/test?retryWrites=true&w=majority', {
+  useNewUrlParser: true
+}, () => {
+  console.log('Connected to mongo db server');
+});
 
 module.exports = {
     Art: connection.model('Art', artSchema),
