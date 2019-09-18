@@ -26,8 +26,8 @@ app.get('/api/arts', function(req, res) {
 // Gets an art by id
 app.get('/api/arts/:artId', function(req, res) {
     const artId = req.params.artId;
-    artService.getArtById(artId, function(arts) {
-        return res.send(artId);
+    artService.getArtById(artId, function(art) {
+        return res.send(art);
     })
 });
 

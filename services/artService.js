@@ -9,7 +9,7 @@ const artService = () => {
 
     const getArtById = (id, cb, errorCb) => {
         Art.Art.findById(id, function(err, arts) {
-            if(err) { throw new Error(err); }
+            if (err) { errorCb(err); }
             cb(arts);
         })
     };
