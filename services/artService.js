@@ -8,7 +8,10 @@ const artService = () => {
     };
 
     const getArtById = (id, cb, errorCb) => {
-        // Your implementation goes here
+        Art.Art.findById(id, function(err, arts) {
+            if(err) { throw new Error(err); }
+            cb(arts);
+        })
     };
 
     const createArt = (art, cb, errorCb) => {

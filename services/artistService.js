@@ -1,6 +1,10 @@
 const artistService = () => {
+    const Artist = require('../data/db');
     const getAllArtists = (cb, errorCb) => {
-        // Your implementation goes here
+        Artist.Artist.find({}, function(err, artist) {
+            if(err) { errorCb(err); }
+            cb(artist);
+        })
     };
 
     const getArtistById = (id, cb, errorCb) => {

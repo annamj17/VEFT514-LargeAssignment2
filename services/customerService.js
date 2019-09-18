@@ -1,6 +1,10 @@
 const customerService = () => {
+    const Customer = require('../data/db');
     const getAllCustomers = (cb, errorCb) => {
-        // Your implementation goes here
+        Customer.Customer.find({}, function(err, customers) {
+            if(err) { errorCb(err); }
+            cb(customers);
+        })
     };
 
     const getCustomerById = (id, cb, errorCb) => {

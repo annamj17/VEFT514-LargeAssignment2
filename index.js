@@ -26,7 +26,9 @@ app.get('/api/arts', function(req, res) {
 // Gets an art by id
 app.get('/api/arts/:artId', function(req, res) {
     const artId = req.params.artId;
-    return res.send(artId);
+    artService.getArtById(artId, function(arts) {
+        return res.send(artId);
+    })
 });
 
 // http://localhost:3000/api/arts   [POST]
@@ -40,7 +42,9 @@ app.post('/api/arts', function(req, res) {
 // http://localhost:3000/api/artists   [GET]
 // Gets all artists
 app.get('/api/artists', function(req, res) {
-    return res.json({ hi: 'hi' });
+    artistService.getAllArtists(function (artists) {
+        return res.json(artists);
+    })
 });
 
 // http://localhost:3000/api/artists/1   [GET]
@@ -61,7 +65,9 @@ app.post('/api/artists', function(req, res) {
 // http://localhost:3000/api/customers   [GET]
 // Gets all customers
 app.get('/api/customers', function(req, res) {
-    return res.json({ hi: 'hi' });
+    customerService.getAllCustomers(function (customers) {
+        return res.json(customers);
+    })
 });
 
 // http://localhost:3000/api/customers/1   [GET]
@@ -89,7 +95,9 @@ app.get('/api/customers/:customerId/auction-bids', function(req, res) {
 // Gets all auctions
 
 app.get('/api/auctions', function(req, res) {
-    return res.json({ hi: 'hi' });
+    auctionService.getAllAuctions(function (auctions) {
+        return res.json(auctions);
+    })
 });
 
 // http://localhost:3000/api/auctions/1   [GET]
