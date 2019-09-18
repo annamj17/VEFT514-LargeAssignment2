@@ -17,7 +17,9 @@ app.use(bodyParser.json());
 // http://localhost:3000/api/arts   [GET]
 // Gets all arts
 app.get('/api/arts', function(req, res) {
-    return res.json({ hi: 'hi' });
+    artService.getAllArts(function (arts) {
+        return res.json(arts);
+    })
 });
 
 // http://localhist:3000/api/1   [GET]
