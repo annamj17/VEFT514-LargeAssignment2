@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 app.get('/api/arts', function(req, res) {
     artService.getAllArts(function (arts) {
         return res.json(arts);
-    })
+    });
 });
 
 // http://localhist:3000/api/1   [GET]
@@ -28,7 +28,7 @@ app.get('/api/arts/:artId', function(req, res) {
     const artId = req.params.artId;
     artService.getArtById(artId, function(art) {
         return res.send(art);
-    })
+    });
 });
 
 // http://localhost:3000/api/arts   [POST]
@@ -48,7 +48,7 @@ app.post('/api/arts', function(req, res) {
 app.get('/api/artists', function(req, res) {
     artistService.getAllArtists(function (artists) {
         return res.json(artists);
-    })
+    });
 });
 
 // http://localhost:3000/api/artists/1   [GET]
@@ -77,26 +77,37 @@ app.post('/api/artists', function(req, res) {
 app.get('/api/customers', function(req, res) {
     customerService.getAllCustomers(function (customers) {
         return res.json(customers);
-    })
+    });
 });
 
 // http://localhost:3000/api/customers/1   [GET]
 // Gets a customer by id
 app.get('/api/customers/:customerId', function(req, res) {
-    const cumstomerId = req.params.cumstomerId;
-    return res.send(cumstomerId);
+    const customerId = req.params.customerId;
+    customerService.getCustomerById(customerId, function(customer) {
+        return res.send(customer);
+    });
 });
 
 // http://localhost:3000/api/customers   [POST]
 // Creates a new customer
 app.post('/api/customers', function(req, res) {
-    return res.json(req.body);
+    customerService.createCustomer(req.body, function(customer) {
+        return res.status(201).json(customer);
+    }, function(err) {
+        return res.status(400).json(err);
+    });
 });
 
 // http://localhost:3000/api/customers/1/auction-bids   [GET]
 // Gets all auction bids associated with a customer
 app.get('/api/customers/:customerId/auction-bids', function(req, res) {
-
+    const customerId = req.params.customerId;
+    customerService.getCustomerAuctionBids(customerId, function(auctionBids) {
+        return res.send(auctionBids);
+    }, function(err) {
+        return res.status(400).json(err);
+    });
 });
 
 /***** AUCTIONS *****/
