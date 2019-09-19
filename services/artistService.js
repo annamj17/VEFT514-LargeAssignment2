@@ -8,11 +8,17 @@ const artistService = () => {
     };
 
     const getArtistById = (id, cb, errorCb) => {
-        // Your implementation goes here
+        Artist.Artist.findById(id, function(err, artist) {
+            if(err) { errorCb(err); }
+            cb(artist);
+        });
     };
 
     const createArtist = (artist, cb, errorCb) => {
-        // Your implementation goes here
+        Artist.Artist.create(artist, function(err, result) {
+            if(err) { errorCb(err); }
+            cb(result);
+        });
     };
 
     return {

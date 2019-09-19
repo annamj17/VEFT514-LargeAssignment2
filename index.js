@@ -55,13 +55,19 @@ app.get('/api/artists', function(req, res) {
 // Gets an artist by id
 app.get('/api/artists/:artistId', function(req, res) {
     const artistId = req.params.artistId;
-    return res.send(artistId);
+    artistService.getArtistById(artistId, function(artist) {
+        return res.send(artist);
+    });
 });
 
 // http://localhost:3000/api/artists   [POST]
 // Creates a new artist
 app.post('/api/artists', function(req, res) {
-    return res.json(req.body);
+    artistService.createArtist(req.body, function(artist) {
+        return res.status(201).json(artist);
+    }, function(err) {
+        return res.status(400).json(err);
+    });
 });
 
 /***** CUSTOMERS *****/
