@@ -14,8 +14,11 @@ const artService = () => {
         })
     };
 
-    const createArt = (art, cb, errorCb) => {
-        // Your implementation goes here
+    const createArt = (art, successCb, errorCb) => {
+        Art.Art.create(art, function(err, result) {
+            if (err) { errorCb(err); }
+            else { successCb(result); }
+          });
     };
 
     return {

@@ -34,7 +34,11 @@ app.get('/api/arts/:artId', function(req, res) {
 // http://localhost:3000/api/arts   [POST]
 // Creates a new art
 app.post('/api/arts', function(req, res) {
-    return res.json(req.body);
+    artService.createArt(req.body, function(art) {
+        return res.status(201).json(art);
+      }, function(err) {
+        return res.status(400).json(err);
+      });
 });
 
 /***** ARTISTS *****/
