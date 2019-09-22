@@ -8,15 +8,24 @@ const auctionService = () => {
     };
 
     const getAuctionById = (id, cb, errorCb) => {
-        // Your implementation goes here
+        Auction.Auction.findById(id, function(err, auctions) {
+            if (err) { errorCb(err); }
+            cb(auctions);
+        })
     };
 
     const getAuctionWinner = (auctionId, cb, errorCb) => {
-        // Your implementation goes here
+        Auction.Auction.findById(auctionId, function(err, auctions) {
+            if(err) { errorCb(err); }
+            cb(auctions); 
+        })
     };
 
-	const createAuction = (auction, cb, errorCb) => {
-        // Your implementation goes here
+	const createAuction = (auction, successCb, errorCb) => {
+        Auction.Auction.create(auction, function(err, result) {
+            if (err) { errorCb(err); }
+            else { successCb(result); }
+          });
     };
 
 	const getAuctionBidsWithinAuction = (auctionId, cb, errorCb) => {
@@ -24,7 +33,10 @@ const auctionService = () => {
     };
 
 	const placeNewBid = (auctionId, customerId, price, cb, errorCb) => {
-		// Your implementation goes here
+		/*Auction.Auction.create(auction, function(err, result) {
+            if (err) { errorCb(err); }
+            else { successCb(result); }
+          });*/
 	}
 
     return {

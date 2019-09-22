@@ -126,18 +126,31 @@ app.get('/api/auctions', function(req, res) {
 
 app.get('/api/auctions/:auctionId', function(req, res) {
     const auctionId = req.params.auctionId;
-    return res.send(auctionId);
+    auctionService.getAuctionById(auctionId, function(auction) {
+        return res.send(auction);
+    })
 });
 
 // http://localhost:3000/api/auctions/1/winner   [GET]
 //  Gets the winner of the auction
 app.get('/api/auctions/:auctionId/winner', function(req, res) {
+    const auctionId = req.params.auctionId;
+    auctionService.getAuctionWinner(auctionId, function(auction) {
+        //if(auction.auctionWinner != null) {
+            return res.send(auction.auctionWinner);
+        //}
+    })
 
 });
 
 // http://localhost:3000/api/auctions   [POST]
 // Create a new auction
 app.post('/api/auctions', function(req, res) {
+    auctionService.createAuction(req.body, function(auction) {
+        return res.status(201).json(auction);
+      }, function(err) {
+        return res.status(412).json(err);
+      });
 
 });
 
