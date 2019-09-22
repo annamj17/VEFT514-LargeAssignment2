@@ -144,7 +144,7 @@ const auctions = [
         id: 1,
         artId: 1,
         minimumPrice: 150,
-        endDate: new Date('10/10/2019 10:00:00')
+        endDate: new Date('10/10/2019 10:00:00'),
     },
     {
         id: 2,
