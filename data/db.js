@@ -12,9 +12,9 @@ const connection = mongoose.createConnection('mongodb+srv://Anna:Abc1234@cluster
 });
 
 module.exports = {
-    Art: connection.model('Art', artSchema),
-    Artist: connection.model('Artist', artistSchema),
-    Auction: connection.model('Auction', auctionSchema),
-    AuctionBid: connection.model('AuctionBid', auctionBidSchema),
-    Customer: connection.model('Customer', customerSchema)
+    Art: connection.model('Art', artSchema, 'arts'),
+    Artist: connection.model('Artist', artistSchema, 'artists'),
+    Auction: connection.model('Auction', auctionSchema, 'auctions'),
+    AuctionBid: connection.model('AuctionBid', auctionBidSchema, 'auctionBids'),
+    Customer: connection.model('Customer', customerSchema, 'customers')
 };
