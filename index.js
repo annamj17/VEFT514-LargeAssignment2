@@ -11,7 +11,6 @@ const app = express();
 // Tekur req body og umbreytir yfir i json
 app.use(bodyParser.json());
 
-
 /***** ARTS *****/
 
 // http://localhost:3000/api/arts   [GET]
@@ -28,6 +27,8 @@ app.get('/api/arts/:artId', function(req, res) {
     const artId = req.params.artId;
     artService.getArtById(artId, function(art) {
         return res.send(art);
+    }, function (err) {
+        return res.status(404).json(err);
     });
 });
 
@@ -57,6 +58,8 @@ app.get('/api/artists/:artistId', function(req, res) {
     const artistId = req.params.artistId;
     artistService.getArtistById(artistId, function(artist) {
         return res.send(artist);
+    }, function (err) {
+        return res.status(404).json(err);
     });
 });
 
@@ -86,6 +89,8 @@ app.get('/api/customers/:customerId', function(req, res) {
     const customerId = req.params.customerId;
     customerService.getCustomerById(customerId, function(customer) {
         return res.send(customer);
+    }, function (err) {
+        return res.status(404).json(err);
     });
 });
 
@@ -106,7 +111,7 @@ app.get('/api/customers/:customerId/auction-bids', function(req, res) {
     customerService.getCustomerAuctionBids(customerId, function(auctionBids) {
         return res.send(auctionBids);
     }, function(err) {
-        return res.status(400).json(err);
+        return res.status(404).json(err);
     });
 });
 
@@ -118,7 +123,7 @@ app.get('/api/customers/:customerId/auction-bids', function(req, res) {
 app.get('/api/auctions', function(req, res) {
     auctionService.getAllAuctions(function (auctions) {
         return res.json(auctions);
-    })
+    });
 });
 
 // http://localhost:3000/api/auctions/1   [GET]
@@ -128,7 +133,9 @@ app.get('/api/auctions/:auctionId', function(req, res) {
     const auctionId = req.params.auctionId;
     auctionService.getAuctionById(auctionId, function(auction) {
         return res.send(auction);
-    })
+    }, function (err) {
+        return res.status(404).json(err);
+    });
 });
 
 // http://localhost:3000/api/auctions/1/winner   [GET]
@@ -139,7 +146,7 @@ app.get('/api/auctions/:auctionId/winner', function(req, res) {
         //if(auction.auctionWinner != null) {
             return res.send(auction.auctionWinner);
         //}
-    })
+    });
 
 });
 
@@ -166,7 +173,6 @@ app.get('/api/auctions/auctionId/bids', function(req, res) {
 app.post('/api/auctions/auctionId/bids', function(req, res) {
 
 });
-
 
 
 // http://localhost:3000
