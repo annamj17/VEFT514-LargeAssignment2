@@ -140,14 +140,15 @@ app.get('/api/auctions/:auctionId', function(req, res) {
 
 // http://localhost:3000/api/auctions/1/winner   [GET]
 //  Gets the winner of the auction
-app.get('/api/auctions/:auctionId/winner', function(req, res) {
+app.get('/api/auctions/:auctionId/winner', function (req, res) {
     const auctionId = req.params.auctionId;
-    auctionService.getAuctionWinner(auctionId, function(auction) {
-        //if(auction.auctionWinner != null) {
-            return res.send(auction.auctionWinner);
-        //}
+    auctionService.getAuctionWinner(auctionId, function (customer) {
+        return res.send(customer);
+    }, function (err) {
+        return res.status(404).end('Art id needs to be valid');
+    }, function (err) {
+        return res.status(404).end('Not auctionable');
     });
-
 });
 
 // http://localhost:3000/api/auctions   [POST]
@@ -163,15 +164,23 @@ app.post('/api/auctions', function(req, res) {
 
 // http://localhost:3000/api/auctions/1/bids   [GET]
 // Gets all auction bids associated with an auction
-
-app.get('/api/auctions/auctionId/bids', function(req, res) {
+app.get('/api/auctions/:auctionId/bids', function(req, res) {
 
 });
 
 // http://localhost:3000/api/auctions/1/bids   [POST]
 // Creates a new auction bid
-app.post('/api/auctions/auctionId/bids', function(req, res) {
-
+app.post('/api/auctions/:auctionId/bids', function(req, res) {
+    const auctionId = req.params.auctionId;
+    console.log(auctionId);
+    console.log('bodyCustomerId: ', req.body.customerId);
+    console.log('bodyPrice: ', req.body.price)
+    auctionService.placeNewBid(auctionId, req.body.customerId, req.body.price, function(bid) {
+        return res.status(201).json(bid);
+    }, function (err) {
+        console.log('ERROR: ', err);
+        return res.status(400).json(err);
+    });
 });
 
 
@@ -179,3 +188,4 @@ app.post('/api/auctions/auctionId/bids', function(req, res) {
 app.listen(3000, function() {
     console.log('Server is listening on port 3000');
 });
+
