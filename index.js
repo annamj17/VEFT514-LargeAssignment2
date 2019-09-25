@@ -8,6 +8,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 
+const internalServerError = (res, err) => res.status(500).send(`Internal server error occurred.\n message: \n${err.message}`);
+
 // Tekur req body og umbreytir yfir i json
 app.use(bodyParser.json());
 
@@ -18,6 +20,8 @@ app.use(bodyParser.json());
 app.get('/api/arts', function (req, res) {
     artService.getAllArts(function (arts) {
         return res.json(arts);
+    }, function (err) {
+        return internalServerError(res, err);
     });
 });
 
@@ -49,6 +53,8 @@ app.post('/api/arts', function (req, res) {
 app.get('/api/artists', function (req, res) {
     artistService.getAllArtists(function (artists) {
         return res.json(artists);
+    }, function (err) {
+        return internalServerError(res, err);
     });
 });
 
@@ -80,6 +86,8 @@ app.post('/api/artists', function (req, res) {
 app.get('/api/customers', function (req, res) {
     customerService.getAllCustomers(function (customers) {
         return res.json(customers);
+    }, function(err) {
+            return internalServerError(res, err);
     });
 });
 
@@ -122,6 +130,8 @@ app.get('/api/customers/:customerId/auction-bids', function (req, res) {
 app.get('/api/auctions', function (req, res) {
     auctionService.getAllAuctions(function (auctions) {
         return res.json(auctions);
+    }, function (err) {
+            return internalServerError(res, err);
     });
 });
 
@@ -151,23 +161,23 @@ app.get('/api/auctions/:auctionId/winner', function (req, res) {
 
 // http://localhost:3000/api/auctions   [POST]
 // Create a new auction
-app.post('/api/auctions', function(req, res) {
-    auctionService.createAuction(req.body, function(auction) {
+app.post('/api/auctions', function (req, res) {
+    auctionService.createAuction(req.body, function (auction) {
         console.log(req.body);
-        return res.status(201).json(auction); 
-      }, function(err) {
+        return res.status(201).json(auction);
+    }, function (err) {
         return res.status(412).json(err);
-      });
+    });
 });
 
 // http://localhost:3000/api/auctions/1/bids   [GET]
 // Gets all auction bids associated with an auction
-app.get('/api/auctions/:auctionId/bids', function(req, res) {
+app.get('/api/auctions/:auctionId/bids', function (req, res) {
     const auctionId = req.params.auctionId;
-    auctionService.getAuctionBidsWithinAuction(auctionId, function(auctionBids) {
+    auctionService.getAuctionBidsWithinAuction(auctionId, function (auctionBids) {
         return res.send(auctionBids);
-    }, function(err) {
-        return res.status(400).json(err);   
+    }, function (err) {
+        return res.status(400).json(err);
     });
 });
 
