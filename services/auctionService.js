@@ -41,35 +41,25 @@ const auctionService = () => {
         });
     };
 
-    const createAuction = (auction, successCb, errorCb) => {
-        Art.findById(auction.artId, (err, art) => {
-            if (err) {
-                errorCb(err);
-                console.log('Fyrsti error');
-            }
-
-            else if (!art) {
-                errorCb(err);
-                console.log('Núna ertu hér og art er ekki til');
-            }
-
-            else if (!art.isAuctionItem) {
-                console.log(art.isAuctionItem);
-                errorCb(err);
-                console.log('Núna ertu hér og isAuctionItem er ekki til');
-            }
-
+    const createAuction = (auction, cb, err) => {
+        // check if external id exists
+        Art.findById(auction.artId, (error, art) => {
+            console.log("art.date:", art.date);
+            var today = new Date();
+            console.log("today", today);
+            var endDateDate = new Date(auction.endDate);
+            if (error) err(error);
+            else if (!art) { console.log("Bjani"); }
+            else if (!art.isAuctionItem) { console.log('The art being put up for auction is not an auction item'); }
+            else if (today >= endDateDate) { console.log('there is an ongoing auction currently for this art, art.date', auction.endDate, 'today', today); }
             else {
-                console.log('Núna ætlum við að búa til auction :)');
                 Auction.create({
                     artId: auction.artId,
                     minimumPrice: auction.minimumPrice,
                     endDate: auction.endDate
-                }, error => {
-                    if (error) err(error);
-                    else successCb(auction);
-                });
-            };
+                }, error => { if (error) err(error); else cb(true); }
+                );
+            }
         });
     };
 
