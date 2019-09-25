@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 
 // http://localhost:3000/api/arts   [GET]
 // Gets all arts
-app.get('/api/arts', function(req, res) {
+app.get('/api/arts', function (req, res) {
     artService.getAllArts(function (arts) {
         return res.json(arts);
     });
@@ -23,9 +23,9 @@ app.get('/api/arts', function(req, res) {
 
 // http://localhist:3000/api/1   [GET]
 // Gets an art by id
-app.get('/api/arts/:artId', function(req, res) {
+app.get('/api/arts/:artId', function (req, res) {
     const artId = req.params.artId;
-    artService.getArtById(artId, function(art) {
+    artService.getArtById(artId, function (art) {
         return res.send(art);
     }, function (err) {
         return res.status(404).json(err);
@@ -34,19 +34,19 @@ app.get('/api/arts/:artId', function(req, res) {
 
 // http://localhost:3000/api/arts   [POST]
 // Creates a new art
-app.post('/api/arts', function(req, res) {
-    artService.createArt(req.body, function(art) {
+app.post('/api/arts', function (req, res) {
+    artService.createArt(req.body, function (art) {
         return res.status(201).json(art);
-      }, function(err) {
+    }, function (err) {
         return res.status(400).json(err);
-      });
+    });
 });
 
 /***** ARTISTS *****/
 
 // http://localhost:3000/api/artists   [GET]
 // Gets all artists
-app.get('/api/artists', function(req, res) {
+app.get('/api/artists', function (req, res) {
     artistService.getAllArtists(function (artists) {
         return res.json(artists);
     });
@@ -54,9 +54,9 @@ app.get('/api/artists', function(req, res) {
 
 // http://localhost:3000/api/artists/1   [GET]
 // Gets an artist by id
-app.get('/api/artists/:artistId', function(req, res) {
+app.get('/api/artists/:artistId', function (req, res) {
     const artistId = req.params.artistId;
-    artistService.getArtistById(artistId, function(artist) {
+    artistService.getArtistById(artistId, function (artist) {
         return res.send(artist);
     }, function (err) {
         return res.status(404).json(err);
@@ -65,10 +65,10 @@ app.get('/api/artists/:artistId', function(req, res) {
 
 // http://localhost:3000/api/artists   [POST]
 // Creates a new artist
-app.post('/api/artists', function(req, res) {
-    artistService.createArtist(req.body, function(artist) {
+app.post('/api/artists', function (req, res) {
+    artistService.createArtist(req.body, function (artist) {
         return res.status(201).json(artist);
-    }, function(err) {
+    }, function (err) {
         return res.status(400).json(err);
     });
 });
@@ -77,7 +77,7 @@ app.post('/api/artists', function(req, res) {
 
 // http://localhost:3000/api/customers   [GET]
 // Gets all customers
-app.get('/api/customers', function(req, res) {
+app.get('/api/customers', function (req, res) {
     customerService.getAllCustomers(function (customers) {
         return res.json(customers);
     });
@@ -85,9 +85,9 @@ app.get('/api/customers', function(req, res) {
 
 // http://localhost:3000/api/customers/1   [GET]
 // Gets a customer by id
-app.get('/api/customers/:customerId', function(req, res) {
+app.get('/api/customers/:customerId', function (req, res) {
     const customerId = req.params.customerId;
-    customerService.getCustomerById(customerId, function(customer) {
+    customerService.getCustomerById(customerId, function (customer) {
         return res.send(customer);
     }, function (err) {
         return res.status(404).json(err);
@@ -96,21 +96,21 @@ app.get('/api/customers/:customerId', function(req, res) {
 
 // http://localhost:3000/api/customers   [POST]
 // Creates a new customer
-app.post('/api/customers', function(req, res) {
-    customerService.createCustomer(req.body, function(customer) {
+app.post('/api/customers', function (req, res) {
+    customerService.createCustomer(req.body, function (customer) {
         return res.status(201).json(customer);
-    }, function(err) {
+    }, function (err) {
         return res.status(400).json(err);
     });
 });
 
 // http://localhost:3000/api/customers/1/auction-bids   [GET]
 // Gets all auction bids associated with a customer
-app.get('/api/customers/:customerId/auction-bids', function(req, res) {
+app.get('/api/customers/:customerId/auction-bids', function (req, res) {
     const customerId = req.params.customerId;
-    customerService.getCustomerAuctionBids(customerId, function(auctionBids) {
+    customerService.getCustomerAuctionBids(customerId, function (auctionBids) {
         return res.send(auctionBids);
-    }, function(err) {
+    }, function (err) {
         return res.status(404).json(err);
     });
 });
@@ -119,8 +119,7 @@ app.get('/api/customers/:customerId/auction-bids', function(req, res) {
 
 // http://localhost:3000/auctions/1   [GET]
 // Gets all auctions
-
-app.get('/api/auctions', function(req, res) {
+app.get('/api/auctions', function (req, res) {
     auctionService.getAllAuctions(function (auctions) {
         return res.json(auctions);
     });
@@ -128,10 +127,9 @@ app.get('/api/auctions', function(req, res) {
 
 // http://localhost:3000/api/auctions/1   [GET]
 // Gets an auction by id
-
-app.get('/api/auctions/:auctionId', function(req, res) {
+app.get('/api/auctions/:auctionId', function (req, res) {
     const auctionId = req.params.auctionId;
-    auctionService.getAuctionById(auctionId, function(auction) {
+    auctionService.getAuctionById(auctionId, function (auction) {
         return res.send(auction);
     }, function (err) {
         return res.status(404).json(err);
@@ -153,39 +151,36 @@ app.get('/api/auctions/:auctionId/winner', function (req, res) {
 
 // http://localhost:3000/api/auctions   [POST]
 // Create a new auction
-app.post('/api/auctions', function(req, res) {
-    auctionService.createAuction(req.body, function(auction) {
+app.post('/api/auctions', function (req, res) {
+    auctionService.createAuction(req.body.auction, function (auction) {
         return res.status(201).json(auction);
-      }, function(err) {
+    }, function (err) {
         return res.status(412).json(err);
-      });
-
+    });
 });
 
 // http://localhost:3000/api/auctions/1/bids   [GET]
 // Gets all auction bids associated with an auction
-app.get('/api/auctions/:auctionId/bids', function(req, res) {
+app.get('/api/auctions/:auctionId/bids', function (req, res) {
 
 });
 
 // http://localhost:3000/api/auctions/1/bids   [POST]
 // Creates a new auction bid
-app.post('/api/auctions/:auctionId/bids', function(req, res) {
+app.post('/api/auctions/:auctionId/bids', function (req, res) {
     const auctionId = req.params.auctionId;
-    console.log(auctionId);
-    console.log('bodyCustomerId: ', req.body.customerId);
-    console.log('bodyPrice: ', req.body.price)
-    auctionService.placeNewBid(auctionId, req.body.customerId, req.body.price, function(bid) {
+    auctionService.placeNewBid(auctionId, req.body.customerId, req.body.price, function (bid) {
         return res.status(201).json(bid);
     }, function (err) {
-        console.log('ERROR: ', err);
-        return res.status(400).json(err);
+        return res.status(412).end('Error: the auction bid price is lower than the minimum price or current highest bid.');
+    }, function (err) {
+        return res.status(403).end('Error: the auction has already passed its end date.');
     });
 });
 
 
 // http://localhost:3000
-app.listen(3000, function() {
+app.listen(3000, function () {
     console.log('Server is listening on port 3000');
 });
 
