@@ -155,17 +155,22 @@ app.get('/api/auctions/:auctionId/winner', function (req, res) {
 // Create a new auction
 app.post('/api/auctions', function(req, res) {
     auctionService.createAuction(req.body, function(auction) {
-        return res.status(201).json(auction);
+        console.log(req.body);
+        return res.status(201).json(auction); 
       }, function(err) {
         return res.status(412).json(err);
       });
-
 });
 
 // http://localhost:3000/api/auctions/1/bids   [GET]
 // Gets all auction bids associated with an auction
 app.get('/api/auctions/:auctionId/bids', function(req, res) {
-
+    const auctionId = req.params.auctionId;
+    auctionService.getAuctionBidsWithinAuction(auctionId, function(auctionBids) {
+        return res.send(auctionBids);
+    }, function(err) {
+        return res.status(400).json(err);   
+    });
 });
 
 // http://localhost:3000/api/auctions/1/bids   [POST]

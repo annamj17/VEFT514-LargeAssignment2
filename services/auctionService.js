@@ -1,5 +1,5 @@
 const auctionService = () => {
-    const { Auction, AuctionBid, Customer } = require('../data/db');
+    const { Auction, AuctionBid, Customer, Art } = require('../data/db');
 
     const getAllAuctions = (cb, errorCb) => {
         Auction.find({}, function(err, auctions) {
@@ -16,7 +16,7 @@ const auctionService = () => {
     };
 
     const getAuctionWinner = (auctionId, cb, errorCb) => {
-        AuctionBid.findById(auctionId, (err, auction) => {
+        Auction.findById(auctionId, (err, auction) => {
             if (err) { errorCb(err); }
             else if (auction === null) {
                 errorCb(err);
@@ -41,14 +41,39 @@ const auctionService = () => {
     };
 
 	const createAuction = (auction, successCb, errorCb) => {
-        Auction.create(auction, function(err, result) {
-            if (err) { errorCb(err); }
-            else { successCb(result); }
-          });
+        Art.findById(auction.artId, (err, art) => {
+            if (err) {
+                errorCb(err);
+                console.log('Fyrsti error');}
+ 
+            else if (!art) {
+                errorCb(err, );
+                console.log('Núna ertu hér og art er ekki til');}
+
+            else if (!art.isAuctionItem) {
+                console.log(art.isAuctionItem);
+                errorCb(err);
+                console.log('Núna ertu hér og isAuctionItem er ekki til');}
+
+            else {
+                console.log('Núna ætlum við að búa til auction :)');
+                Auction.create({
+                    artId: auction.artId,
+                    minimumPrice: auction.minimumPrice,
+                    endDate: auction.endDate
+                    }, error => { 
+                    if(error) err(error); 
+                    else successCb(auction); 
+                }
+            )};
+        })
     };
 
 	const getAuctionBidsWithinAuction = (auctionId, cb, errorCb) => {
-        // Your implementation goes here
+        AuctionBid.find({ 'auctionId': auctionId }, function (err, auctionBids) {
+            if (err) { errorCb(err); }
+            cb(auctionBids);
+        });    
     };
 
 	const placeNewBid = (auctionId, customerId, price, cb, errorCb) => {
@@ -83,7 +108,7 @@ const auctionService = () => {
                                     console.log('BIDINDEX', bid);
                                     if (err) { errorCb(err); }
                                     console.log('ERROR', err);
-                                    cb(bid);
+                                    successCb(bid);
                                 });
                             }
                         });
