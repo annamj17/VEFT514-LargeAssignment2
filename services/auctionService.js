@@ -2,7 +2,6 @@ const auctionService = () => {
 
     const { Auction, AuctionBid, Customer, Art } = require('../data/db');
 
-
     const getAllAuctions = (cb, errorCb) => {
         Auction.find({}, function (err, auctions) {
             if (err) { errorCb(err); }
@@ -42,20 +41,23 @@ const auctionService = () => {
         });
     };
 
-	const createAuction = (auction, successCb, errorCb) => {
+    const createAuction = (auction, successCb, errorCb) => {
         Art.findById(auction.artId, (err, art) => {
             if (err) {
                 errorCb(err);
-                console.log('Fyrsti error');}
- 
+                console.log('Fyrsti error');
+            }
+
             else if (!art) {
-                errorCb(err, );
-                console.log('Núna ertu hér og art er ekki til');}
+                errorCb(err);
+                console.log('Núna ertu hér og art er ekki til');
+            }
 
             else if (!art.isAuctionItem) {
                 console.log(art.isAuctionItem);
                 errorCb(err);
-                console.log('Núna ertu hér og isAuctionItem er ekki til');}
+                console.log('Núna ertu hér og isAuctionItem er ekki til');
+            }
 
             else {
                 console.log('Núna ætlum við að búa til auction :)');
@@ -63,19 +65,19 @@ const auctionService = () => {
                     artId: auction.artId,
                     minimumPrice: auction.minimumPrice,
                     endDate: auction.endDate
-                    }, error => { 
-                    if(error) err(error); 
-                    else successCb(auction); 
-                }
-            )};
-        })
+                }, error => {
+                    if (error) err(error);
+                    else successCb(auction);
+                });
+            };
+        });
     };
 
-	const getAuctionBidsWithinAuction = (auctionId, cb, errorCb) => {
+    const getAuctionBidsWithinAuction = (auctionId, cb, errorCb) => {
         AuctionBid.find({ 'auctionId': auctionId }, function (err, auctionBids) {
             if (err) { errorCb(err); }
             cb(auctionBids);
-        });    
+        });
     };
 
     const placeNewBid = (auctionId, customerId, price, cb, errorCb) => {
@@ -98,18 +100,17 @@ const auctionService = () => {
                                         customerId: customerId,
                                         price: price
                                     });
-                                AuctionBid.create(bid, function(err) {
-                                    console.log('BIDINDEX', bid);
-                                    if (err) { errorCb(err); }
-                                    console.log('ERROR', err);
-                                    successCb(bid);
-                                });
-                            }
-                        });
-                
+                                    AuctionBid.create(bid, function (err) {
+                                        if (err) { errorCb(err); }
+                                        cb(bid);
+                                    });
+                                }
+                            });
+                        }
+                    });
                 });
             }
-        })
+        });
     };
 
     return {
