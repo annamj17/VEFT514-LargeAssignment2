@@ -41,17 +41,15 @@ const auctionService = () => {
         });
     };
 
-    const createAuction = (auction, cb, err) => {
+    const createAuction = (auction, cb, err, err404, err409) => {
         // check if external id exists
         Art.findById(auction.artId, (error, art) => {
-            console.log("art.date:", art.date);
             var today = new Date();
-            console.log("today", today);
             var endDateDate = new Date(auction.endDate);
-            if (error) err(error);
-            else if (!art) { console.log("Bjani"); }
-            else if (!art.isAuctionItem) { console.log('The art being put up for auction is not an auction item'); }
-            else if (today >= endDateDate) { console.log('there is an ongoing auction currently for this art, art.date', auction.endDate, 'today', today); }
+            if (error) err404(error);
+            else if (!art) { err404(error) }
+            else if (!art.isAuctionItem) { err(error) }
+            else if (today > endDateDate)  { err409(error); }
             else {
                 Auction.create({
                     artId: auction.artId,

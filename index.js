@@ -157,6 +157,10 @@ app.post('/api/auctions', function(req, res) {
         return res.status(201).json(auction); 
       }, function(err) {
         return res.status(412).json(err);
+    }, function(err404) {
+        return res.status(404).json(err404); 
+        }, function(err409) {
+        return res.status(409).json(err409);            
       });
 });
 
