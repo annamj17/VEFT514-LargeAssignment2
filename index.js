@@ -151,7 +151,9 @@ app.get('/api/auctions/:auctionId', function (req, res) {
 app.get('/api/auctions/:auctionId/winner', function (req, res) {
     const auctionId = req.params.auctionId;
     auctionService.getAuctionWinner(auctionId, function (customer) {
-        return res.send(customer);
+        return res.status(200).send(customer);
+    }, function (err409) {
+        return res.status(409).end('The auction is not finished');
     }, function (err) {
         return res.status(404).end('Art id needs to be valid');
     }, function (err) {

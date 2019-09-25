@@ -16,14 +16,14 @@ const auctionService = () => {
         });
     };
 
-    const getAuctionWinner = (auctionId, cb, errorCb) => {
+    const getAuctionWinner = (auctionId, cb, errorCb, err409) => {
         Auction.findById(auctionId, (err, auction) => {
             if (err) { errorCb(err); }
             else if (auction === null) {
                 errorCb(err);
             }
             else if (auction.endDate >= Date.now) {
-                errorCb(err);
+                err409(err);
             }
             else if (!auction.auctionWinner) {
                 cb('This auction had no bids.');
