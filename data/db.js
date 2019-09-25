@@ -6,9 +6,9 @@ const auctionBidSchema = require('../schemas/auctionBid');
 const customerSchema = require('../schemas/customer');
 
 const connection = mongoose.createConnection('mongodb+srv://Anna:Abc1234@cluster0-hkoga.mongodb.net/mansion_de_subastas', {
-  useNewUrlParser: true
+    useNewUrlParser: true
 }, () => {
-  console.log('Connected to mongo db server');
+    console.log('Connected to mongo db server');
 });
 
 module.exports = {
