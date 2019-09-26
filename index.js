@@ -86,8 +86,8 @@ app.post('/api/artists', function (req, res) {
 app.get('/api/customers', function (req, res) {
     customerService.getAllCustomers(function (customers) {
         return res.json(customers);
-    }, function(err) {
-            return internalServerError(res, err);
+    }, function(status, message) {
+        return res.status(status).send(message);
     });
 });
 
@@ -97,8 +97,8 @@ app.get('/api/customers/:customerId', function (req, res) {
     const customerId = req.params.customerId;
     customerService.getCustomerById(customerId, function (customer) {
         return res.send(customer);
-    }, function (err) {
-        return res.status(404).json(err);
+    }, function (status, message) {
+        return res.status(status).send(message);
     });
 });
 
@@ -107,8 +107,8 @@ app.get('/api/customers/:customerId', function (req, res) {
 app.post('/api/customers', function (req, res) {
     customerService.createCustomer(req.body, function (customer) {
         return res.status(201).json(customer);
-    }, function (err) {
-        return res.status(400).json(err);
+    }, function (status, message) {
+        return res.status(status).send(message);
     });
 });
 
@@ -118,8 +118,8 @@ app.get('/api/customers/:customerId/auction-bids', function (req, res) {
     const customerId = req.params.customerId;
     customerService.getCustomerAuctionBids(customerId, function (auctionBids) {
         return res.send(auctionBids);
-    }, function (err) {
-        return res.status(404).json(err);
+    }, function (status, message) {
+        return res.status(status).send(message);
     });
 });
 
