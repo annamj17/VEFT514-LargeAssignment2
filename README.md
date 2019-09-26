@@ -9,17 +9,24 @@ these artist sellers demand perfection!
 ### Rules
 This applies for all routes:
 *If a resource is not found, the web service should always return a status code 404
+
 *In POST requests which include ids from another resource, the ids should be validated by checking if they exist. If they don’t exist the web service should return a status code 400
+
 *If an error occurs on the database level, the web service should return a status code 500
+
 *There is not model validation required for this assignment
 
 ### Functionality (80%)
-  • Routes (all route declarations should reside in index.js)
-  • (2.5%) /api/arts [GET] - Gets all arts
-  • (2.5%) /api/arts/:id [GET] - Gets an art by id
-  • (5%) /api/arts [POST] - Creates a new art (see how model should look like in Model
+*Routes (all route declarations should reside in index.js)
+
+*(2.5%) /api/arts [GET] - Gets all arts
+
+*(2.5%) /api/arts/:id [GET] - Gets an art by id
+
+*(5%) /api/arts [POST] - Creates a new art (see how model should look like in Model
+
     section)
-  • (2.5%) /api/artists [GET] - Gets all artists
+*(2.5%) /api/artists [GET] - Gets all artists
   • (2.5%) /api/artists/:id [GET] - Gets an artist by id
   • (5%) /api/artists [POST] - Creates a new artist (see how model should look like in
     Model section)
