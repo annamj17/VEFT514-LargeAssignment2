@@ -192,9 +192,9 @@ app.post('/api/auctions/:auctionId/bids', function (req, res) {
     const auctionId = req.params.auctionId;
     auctionService.placeNewBid(auctionId, req.body.customerId, req.body.price, function (bid) {
         return res.status(201).json(bid);
-    }, function (err) {
+    }, function (err412) {
         return res.status(412).end('Error: the auction bid price is lower than the minimum price or current highest bid.');
-    }, function (err) {
+    }, function (err403) {
         return res.status(403).end('Error: the auction has already passed its end date.');
     });
 });

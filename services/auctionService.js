@@ -68,20 +68,29 @@ const auctionService = () => {
         });
     };
 
-    const placeNewBid = (auctionId, customerId, price, cb, errorCb) => {
-        Auction.findById(auctionId, function (err, auction) {
-            if (!auction) { errorCb(send(status(404))); /* TODO: Handle 404 not found */ }
+    const placeNewBid = (auctionId, customerId, price, cb, errorCb,  err412, err403, err404) => {
+        Auction.findById(auctionId, function (error, auction) {
+            if (!auction) { err404(error); }//{ errorCb(send(status(404))); /* TODO: Handle 404 not found */ }
             else {
-                Customer.findById(customerId, function (err, customer) {
-                    if (!customer) { errorCb('Kjani'); /* TODO: Handle 404 not found */ }
-                    AuctionBid.findOne({ auctionId: auctionId }).sort('price').exec((err, highestBidder) => {
+                Customer.findById(customerId, function (error, customer) {
+                    if (!customer) { err404(error); 
+                    console.log(error);
+                    }//{ errorCb('Kjani'); /* TODO: Handle 404 not found */ }
+                    
+                    AuctionBid.findOne({ auctionId: auctionId }).sort('price').exec((error, highestBidder) => {
                         if (!highestBidder || price <= highestBidder.price) {
-                            errorCb('kjani2');
+                            //console.log(highestBidder);
+                            //console.log(error);
+                            console.log('kjani2');
+                            { err412(error); }
                         } else if (auction.endDate > Date.now) {
-                            errorCb('kjani3');
+                           console.log('kjani3');
+                           console.log(error);
+                            { err403(error); }
+                            console.log(error);
                         } else {
-                            Auction.findOneAndUpdate({ '_id': auctionId }, { $set: { 'auctionWinner': highestBidder.customerId } }, function (err) {
-                                if (err) { errorCb(err); }
+                            Auction.findOneAndUpdate({ '_id': auctionId }, { $set: { 'auctionWinner': highestBidder.customerId } }, function (error) {
+                                if (error) { errorCb(error); }
                                 else {
                                     const bid = new AuctionBid({
                                         auctionId: auctionId,
