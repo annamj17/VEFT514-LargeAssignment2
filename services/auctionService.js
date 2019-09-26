@@ -1,5 +1,4 @@
 const auctionService = () => {
-
     const { Auction, AuctionBid, Customer, Art } = require('../data/db');
 
     const getAllAuctions = (cb, errorCb) => {
@@ -19,20 +18,12 @@ const auctionService = () => {
     const getAuctionWinner = (auctionId, cb, errorCb) => {
         Auction.findById(auctionId, (err, auction) => {
             if (err) { errorCb(500, 'database error occurred'); }
-            else if (auction === null) {
-                errorCb(404, 'not found');
-            }
-            else if (auction.endDate >= Date.now) {
-               { errorCb(409, 'Auction is not finished'); }
-            }
-            else if (!auction.auctionWinner) {
-                cb('This auction had no bids.');
-            }
+            else if (auction === null) { errorCb(404, 'not found'); }
+            else if (auction.endDate >= Date.now) {  errorCb(409, 'Auction is not finished'); }
+            else if (!auction.auctionWinner) { cb('This auction had no bids.'); }
             else {
                 Customer.findById(auction.auctionWinner, (customerError, customer) => {
-                    if (customerError) {
-                        errorCb(err);
-                    }
+                    if (customerError) { errorCb(err); }
                     else {
                         cb(customer);
                     }
@@ -42,7 +33,6 @@ const auctionService = () => {
     };
 
     const createAuction = (auction, cb, err, err404, err409) => {
-        // check if external id exists
         Art.findById(auction.artId, (error, art) => {
             var today = new Date();
             var endDateDate = new Date(auction.endDate);

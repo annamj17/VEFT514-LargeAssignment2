@@ -1,9 +1,7 @@
 const artService = () => {
-
     const { Art, Artist } = require('../data/db');
-
+    
     const getAllArts = (cb, errorCb) => {
-
         Art.find({}, function(err, arts) {
             if(err) { errorCb(err); }
             cb(arts);
@@ -21,9 +19,7 @@ const artService = () => {
         Artist.findById(art.artistId, function(err, artist) {
             if (err) { errorCb(err); }
             else {
-                if(artist === null) {
-                    errorCb(err);
-                }
+                if(artist === null) { errorCb(err); }
                 Art.create(art, function (err, result) {
                     if (err) { errorCb(err); }
                     else { successCb(result); }
