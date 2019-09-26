@@ -8,7 +8,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 
-const internalServerError = (res, err) => res.status(500).send(`Internal server error occurred.\n message: \n${err.message}`);
+// const internalServerError = (res, err) => res.status(500).send(`Internal server error occurred.\n message: \n${err.message}`);
 
 // Tekur req body og umbreytir yfir i json
 app.use(bodyParser.json());
@@ -20,8 +20,8 @@ app.use(bodyParser.json());
 app.get('/api/arts', function (req, res) {
     artService.getAllArts(function (arts) {
         return res.json(arts);
-    }, function (err) {
-        return internalServerError(res, err);
+    }, function (status, message) {
+        return res.status(status).send(message);
     });
 });
 
@@ -31,8 +31,8 @@ app.get('/api/arts/:artId', function (req, res) {
     const artId = req.params.artId;
     artService.getArtById(artId, function (art) {
         return res.send(art);
-    }, function (err) {
-        return res.status(404).json(err);
+    }, function (status, message) {
+        return res.status(status).send(message);
     });
 });
 
@@ -41,8 +41,8 @@ app.get('/api/arts/:artId', function (req, res) {
 app.post('/api/arts', function (req, res) {
     artService.createArt(req.body, function (art) {
         return res.status(201).json(art);
-    }, function (err) {
-        return res.status(400).json(err);
+    }, function (status, message) {
+        return res.status(status).send(message);
     });
 });
 
@@ -53,8 +53,8 @@ app.post('/api/arts', function (req, res) {
 app.get('/api/artists', function (req, res) {
     artistService.getAllArtists(function (artists) {
         return res.json(artists);
-    }, function (err) {
-        return internalServerError(res, err);
+    }, function (status, message) {
+        return res.status(status).send(message);
     });
 });
 
@@ -64,8 +64,8 @@ app.get('/api/artists/:artistId', function (req, res) {
     const artistId = req.params.artistId;
     artistService.getArtistById(artistId, function (artist) {
         return res.send(artist);
-    }, function (err) {
-        return res.status(404).json(err);
+    }, function (status, message) {
+        return res.status(status).send(message);
     });
 });
 
@@ -74,8 +74,8 @@ app.get('/api/artists/:artistId', function (req, res) {
 app.post('/api/artists', function (req, res) {
     artistService.createArtist(req.body, function (artist) {
         return res.status(201).json(artist);
-    }, function (err) {
-        return res.status(400).json(err);
+    }, function (status, message) {
+        return res.status(status).send(message);
     });
 });
 
