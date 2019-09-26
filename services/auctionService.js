@@ -16,14 +16,14 @@ const auctionService = () => {
         });
     };
 
-    const getAuctionWinner = (auctionId, cb, errorCb, err409) => {
+    const getAuctionWinner = (auctionId, cb, errorCb) => {
         Auction.findById(auctionId, (err, auction) => {
-            if (err) { errorCb(err); }
+            if (err) { errorCb(500, 'database error occurred'); }
             else if (auction === null) {
-                errorCb(err);
+                errorCb(404, 'not found');
             }
             else if (auction.endDate >= Date.now) {
-                err409(err);
+               { errorCb(409, 'Auction is not finished'); }
             }
             else if (!auction.auctionWinner) {
                 cb('This auction had no bids.');
@@ -63,25 +63,27 @@ const auctionService = () => {
 
     const getAuctionBidsWithinAuction = (auctionId, cb, errorCb) => {
         AuctionBid.find({ 'auctionId': auctionId }, function (err, auctionBids) {
-            if (err) { errorCb(err); }
+            if(err) { errorCb(500, 'database error occurred'); }
+            //if (err) { errorCb(err); }
             cb(auctionBids);
         });
     };
 
-    const placeNewBid = (auctionId, customerId, price, cb, errorCb,  err412, err403, err404) => {
-        Auction.findById(auctionId, function (error, auction) {
-            if (!auction) { err404(error); }//{ errorCb(send(status(404))); /* TODO: Handle 404 not found */ }
+    const placeNewBid = (auctionId, customerId, price, cb, errorCb) => {
+        Auction.findById(auctionId, function (err, auction) {
+            if(err) { errorCb(500, 'database error occurred'); }
+            else if (!auction) { errorCb(404, 'Auction not found'); }
             else {
                 Customer.findById(customerId, function (error, customer) {
-                    if (!customer) { err404(error); }//{ errorCb('Kjani'); /* TODO: Handle 404 not found */ }
+                    if (!customer) { errorCb(404, 'Customer not found'); }
                     AuctionBid.findOne({ auctionId: auctionId }).sort('price').exec((error, highestBidder) => {
                         if (!highestBidder || price <= highestBidder.price) {
-                            { err412(error); }
+                            { errorCb(412, 'the price is lower than the minimum price'); }
                         } else if (auction.endDate > Date.now) {
-                            { err403(error); }
+                            { errorCb(403, 'The auction has already passed its end date'); }
                         } else {
-                            Auction.findOneAndUpdate({ '_id': auctionId }, { $set: { 'auctionWinner': highestBidder.customerId } }, function (error) {
-                                if (error) { errorCb(error); }
+                            Auction.findOneAndUpdate({ '_id': auctionId }, { $set: { 'auctionWinner': highestBidder.customerId } }, function (err) {
+                                if (err) { errorCb(err); }
                                 else {
                                     const bid = new AuctionBid({
                                         auctionId: auctionId,

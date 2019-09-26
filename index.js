@@ -152,12 +152,14 @@ app.get('/api/auctions/:auctionId/winner', function (req, res) {
     const auctionId = req.params.auctionId;
     auctionService.getAuctionWinner(auctionId, function (customer) {
         return res.status(200).send(customer);
-    }, function (err409) {
-        return res.status(409).end('The auction is not finished');
-    }, function (err) {
-        return res.status(404).end('Art id needs to be valid');
-    }, function (err) {
-        return res.status(404).end('Not auctionable');
+    }, function(status, message) {
+        return res.status(status).send(message);
+     /*function (err409) {
+        return res.status(409).end(err409, 'The auction is not finished');
+    }, function (err404) {
+        return res.status(404).end(err404, 'Art id needs to be valid');
+    }, function (err404) {
+        return res.status(404).end(err404, 'Not auctionable');*/
     });
 });
 
@@ -171,7 +173,7 @@ app.post('/api/auctions', function (req, res) {
     }, function(err404) {
         return res.status(404).json(err404); 
         }, function(err409) {
-        return res.status(409).json(err409);            
+        return res.status(409).json(err409);           
     });
 });
 
@@ -183,6 +185,8 @@ app.get('/api/auctions/:auctionId/bids', function (req, res) {
         return res.send(auctionBids);
     }, function (err) {
         return res.status(400).json(err);
+    }, function(status, message) {
+        return res.status(status).send(message);
     });
 });
 
@@ -192,13 +196,17 @@ app.post('/api/auctions/:auctionId/bids', function (req, res) {
     const auctionId = req.params.auctionId;
     auctionService.placeNewBid(auctionId, req.body.customerId, req.body.price, function (bid) {
         return res.status(201).json(bid);
-    }, function (err412) {
-        return res.status(412).json(err412);
-    }, function (err403) {
-        return res.status(403).json(err403);
+    }, function(status, message) {
+        return res.status(status).send(message);
+        /*
+    }, function (err) {
+        return res.status(404).json(err);
+    }, function (err) {
+        return res.status(412).json(err);
+    }, function (err) {
+        return res.status(403).json(err);*/
     });
 });
-
 
 // http://localhost:3000
 app.listen(3000, function () {
