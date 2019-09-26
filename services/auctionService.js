@@ -73,21 +73,12 @@ const auctionService = () => {
             if (!auction) { err404(error); }//{ errorCb(send(status(404))); /* TODO: Handle 404 not found */ }
             else {
                 Customer.findById(customerId, function (error, customer) {
-                    if (!customer) { err404(error); 
-                    console.log(error);
-                    }//{ errorCb('Kjani'); /* TODO: Handle 404 not found */ }
-                    
+                    if (!customer) { err404(error); }//{ errorCb('Kjani'); /* TODO: Handle 404 not found */ }
                     AuctionBid.findOne({ auctionId: auctionId }).sort('price').exec((error, highestBidder) => {
                         if (!highestBidder || price <= highestBidder.price) {
-                            //console.log(highestBidder);
-                            //console.log(error);
-                            console.log('kjani2');
                             { err412(error); }
                         } else if (auction.endDate > Date.now) {
-                           console.log('kjani3');
-                           console.log(error);
                             { err403(error); }
-                            console.log(error);
                         } else {
                             Auction.findOneAndUpdate({ '_id': auctionId }, { $set: { 'auctionWinner': highestBidder.customerId } }, function (error) {
                                 if (error) { errorCb(error); }
