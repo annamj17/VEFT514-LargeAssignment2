@@ -3,14 +3,15 @@ const auctionService = () => {
 
     const getAllAuctions = (cb, errorCb) => {
         Auction.find({}, function (err, auctions) {
-            if (err) { errorCb(err); }
+            if (err) { errorCb(500, 'database error occurred'); }
             cb(auctions);
         });
     };
 
     const getAuctionById = (id, cb, errorCb) => {
         Auction.findById(id, function (err, auctions) {
-            if (err) { errorCb(err); }
+            if (err) { errorCb(500, 'database error occurred'); }
+            else if (auctions === null) { errorCb(404, 'Id was not found'); }
             cb(auctions);
         });
     };
@@ -19,7 +20,7 @@ const auctionService = () => {
         Auction.findById(auctionId, (err, auction) => {
             if (err) { errorCb(500, 'database error occurred'); }
             else if (auction === null) { errorCb(404, 'not found'); }
-            else if (auction.endDate >= Date.now) {  errorCb(409, 'Auction is not finished'); }
+            else if (auction.endDate >= Date.now) { errorCb(409, 'Auction is not finished'); }
             else if (!auction.auctionWinner) { cb('This auction had no bids.'); }
             else {
                 Customer.findById(auction.auctionWinner, (customerError, customer) => {
@@ -32,14 +33,14 @@ const auctionService = () => {
         });
     };
 
-    const createAuction = (auction, cb, err, err404, err409) => {
-        Art.findById(auction.artId, (error, art) => {
+    const createAuction = (auction, cb, errorCb) => {
+        Art.findById(auction.artId, (err, art) => {
             var today = new Date();
             var endDateDate = new Date(auction.endDate);
-            if (error) err404(error);
-            else if (!art) { err404(error) }
-            else if (!art.isAuctionItem) { err(error) }
-            else if (today > endDateDate)  { err409(error); }
+            if (err) { errorCb(500, 'database error occurred'); }
+            else if (!art) { errorCb(404, 'not found'); }
+            else if (!art.isAuctionItem) { errorCb(412, 'Precondition failed'); }
+            else if (today > endDateDate) { errorCb(409, 'Auction is not finished'); }
             else {
                 Auction.create({
                     artId: auction.artId,
@@ -53,7 +54,7 @@ const auctionService = () => {
 
     const getAuctionBidsWithinAuction = (auctionId, cb, errorCb) => {
         AuctionBid.find({ 'auctionId': auctionId }, function (err, auctionBids) {
-            if(err) { errorCb(500, 'database error occurred'); }
+            if (err) { errorCb(500, 'database error occurred'); }
             //if (err) { errorCb(err); }
             cb(auctionBids);
         });
@@ -61,7 +62,7 @@ const auctionService = () => {
 
     const placeNewBid = (auctionId, customerId, price, cb, errorCb) => {
         Auction.findById(auctionId, function (err, auction) {
-            if(err) { errorCb(500, 'database error occurred'); }
+            if (err) { errorCb(500, 'database error occurred'); }
             else if (!auction) { errorCb(404, 'Auction not found'); }
             else {
                 Customer.findById(customerId, function (error, customer) {
