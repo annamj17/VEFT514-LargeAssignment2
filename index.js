@@ -8,7 +8,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 
-// const internalServerError = (res, err) => res.status(500).send(`Internal server error occurred.\n message: \n${err.message}`);
 
 // Tekur req body og umbreytir yfir i json
 app.use(bodyParser.json());
@@ -86,7 +85,7 @@ app.post('/api/artists', function (req, res) {
 app.get('/api/customers', function (req, res) {
     customerService.getAllCustomers(function (customers) {
         return res.json(customers);
-    }, function(status, message) {
+    }, function (status, message) {
         return res.status(status).send(message);
     });
 });
@@ -130,8 +129,8 @@ app.get('/api/customers/:customerId/auction-bids', function (req, res) {
 app.get('/api/auctions', function (req, res) {
     auctionService.getAllAuctions(function (auctions) {
         return res.json(auctions);
-    }, function (err) {
-            return internalServerError(res, err);
+    }, function (status, message) {
+        return res.status(status).send(message);
     });
 });
 
@@ -141,8 +140,8 @@ app.get('/api/auctions/:auctionId', function (req, res) {
     const auctionId = req.params.auctionId;
     auctionService.getAuctionById(auctionId, function (auction) {
         return res.send(auction);
-    }, function (err) {
-        return res.status(404).json(err);
+    }, function (status, message) {
+        return res.status(status).send(message);
     });
 });
 
@@ -152,14 +151,8 @@ app.get('/api/auctions/:auctionId/winner', function (req, res) {
     const auctionId = req.params.auctionId;
     auctionService.getAuctionWinner(auctionId, function (customer) {
         return res.status(200).send(customer);
-    }, function(status, message) {
+    }, function (status, message) {
         return res.status(status).send(message);
-     /*function (err409) {
-        return res.status(409).end(err409, 'The auction is not finished');
-    }, function (err404) {
-        return res.status(404).end(err404, 'Art id needs to be valid');
-    }, function (err404) {
-        return res.status(404).end(err404, 'Not auctionable');*/
     });
 });
 
@@ -168,12 +161,8 @@ app.get('/api/auctions/:auctionId/winner', function (req, res) {
 app.post('/api/auctions', function (req, res) {
     auctionService.createAuction(req.body, function (auction) {
         return res.status(201).json(auction);
-    }, function (err) {
-        return res.status(412).json(err);
-    }, function(err404) {
-        return res.status(404).json(err404); 
-        }, function(err409) {
-        return res.status(409).json(err409);           
+    }, function (status, message) {
+        return res.status(status).send(message);
     });
 });
 
@@ -183,9 +172,7 @@ app.get('/api/auctions/:auctionId/bids', function (req, res) {
     const auctionId = req.params.auctionId;
     auctionService.getAuctionBidsWithinAuction(auctionId, function (auctionBids) {
         return res.send(auctionBids);
-    }, function (err) {
-        return res.status(400).json(err);
-    }, function(status, message) {
+    }, function (status, message) {
         return res.status(status).send(message);
     });
 });
@@ -196,15 +183,8 @@ app.post('/api/auctions/:auctionId/bids', function (req, res) {
     const auctionId = req.params.auctionId;
     auctionService.placeNewBid(auctionId, req.body.customerId, req.body.price, function (bid) {
         return res.status(201).json(bid);
-    }, function(status, message) {
+    }, function (status, message) {
         return res.status(status).send(message);
-        /*
-    }, function (err) {
-        return res.status(404).json(err);
-    }, function (err) {
-        return res.status(412).json(err);
-    }, function (err) {
-        return res.status(403).json(err);*/
     });
 });
 
