@@ -1,5 +1,6 @@
 const customerService = () => {
     const { Customer, AuctionBid } = require('../data/db');
+    
     const getAllCustomers = (cb, errorCb) => {
         Customer.find({}, function (err, customers) {
             if (err) { errorCb(err); }
