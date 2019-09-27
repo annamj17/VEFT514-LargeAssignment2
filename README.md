@@ -8,40 +8,34 @@ these artist sellers demand perfection!
 
 ### Rules
 This applies for all routes:
-*If a resource is not found, the web service should always return a status code 404
+-If a resource is not found, the web service should always return a status code 404
 
-*In POST requests which include ids from another resource, the ids should be validated by checking if they exist. If they don’t exist the web service should return a status code 400
+-In POST requests which include ids from another resource, the ids should be validated by checking if they exist. If they don’t exist the web service should return a status code 400
 
-*If an error occurs on the database level, the web service should return a status code 500
+-If an error occurs on the database level, the web service should return a status code 500
 
-*There is not model validation required for this assignment
+-There is not model validation required for this assignment
 
 ### Functionality (80%)
-*Routes (all route declarations should reside in index.js)
+-Routes (all route declarations should reside in index.js)
 
-*(2.5%) /api/arts [GET] - Gets all arts
+-(2.5%) /api/arts [GET] - Gets all arts
 
-*(2.5%) /api/arts/:id [GET] - Gets an art by id
+-(2.5%) /api/arts/:id [GET] - Gets an art by id
 
-*(5%) /api/arts [POST] - Creates a new art (see how model should look like in Model
+-(5%) /api/arts [POST] - Creates a new art (see how model should look like in Model section)
 
-    section)
-*(2.5%) /api/artists [GET] - Gets all artists
-  • (2.5%) /api/artists/:id [GET] - Gets an artist by id
-  • (5%) /api/artists [POST] - Creates a new artist (see how model should look like in
-    Model section)
-  • (2.5%) /api/customers [GET] - Gets all customers
-  • (2.5%) /api/customers/:id [GET] - Gets a customer by id
-  • (5%) /api/customers [POST] - Creates a new customer (see how model should look
-    like in Model section)
-  • (2.5%) /api/customers/:id/auction-bids [GET] - Gets all auction bids associated
-    with a customer
-  • (2.5%) /api/auctions [GET] - Gets all auctions
-  • (2.5%) /api/auctions/:id [GET] - Gets an auction by id
-  • (5%) /api/auctions/:id/winner [GET] - Gets the winner of the auction. If the auction
-    is not finished the web service should return a status code 409 (Conflict), otherwise it
-    should return the customer which holds the highest bid. If the auction had no bids, it
-    should return a status code 200 (OK) with the message: ‘This auction had no bids.’.
+-(2.5%) /api/artists [GET] - Gets all artists
+-(2.5%) /api/artists/:id [GET] - Gets an artist by id
+-(5%) /api/artists [POST] - Creates a new artist (see how model should look like in Model section)
+-(2.5%) /api/customers [GET] - Gets all customers
+-(2.5%) /api/customers/:id [GET] - Gets a customer by id
+-(5%) /api/customers [POST] - Creates a new customer (see how model should look like in Model section)
+-(2.5%) /api/customers/:id/auction-bids [GET] - Gets all auction bids associated with a customer
+-(2.5%) /api/auctions [GET] - Gets all auctions
+-(2.5%) /api/auctions/:id [GET] - Gets an auction by id
+-(5%) /api/auctions/:id/winner [GET] - Gets the winner of the auction. If the auction is not finished the web service should return a status code 409 (Conflict), otherwise it should return the customer which holds the highest bid. If the auction had no bids, it
+should return a status code 200 (OK) with the message: ‘This auction had no bids.’.
   • (5%) /api/auctions [POST] - Create a new auction (see how model should look like in
     Model section). The art id provided within the body must be a valid art id with its
     property isAuctionItem set to true. If the isAuctionItem is set to false, the web
