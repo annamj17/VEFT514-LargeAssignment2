@@ -1,5 +1,7 @@
 # VEFT514-LargeAssignment2
 
+npm install before running
+
 ## Mansion de Subastas
 You have been hired as a lead developer for an art-selling company called Mansion de Subastas.
 They are obsessed with NodeJS and will not accept anything else as their tech stack. Along with
